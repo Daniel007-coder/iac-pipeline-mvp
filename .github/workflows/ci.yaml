@@ -1,4 +1,3 @@
-
 name: Terraform CI
 
 on:
@@ -11,6 +10,12 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    # 🧩 Mock AWS credentials so Terraform can run plan/validate in CI
+    env:
+      AWS_ACCESS_KEY_ID: "fake"
+      AWS_SECRET_ACCESS_KEY: "fake"
+      AWS_DEFAULT_REGION: "us-east-1"
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -20,7 +25,7 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      # Dev environment
+      # ─────────────── DEV ENVIRONMENT ───────────────
       - name: Terraform Init (Dev)
         working-directory: ./envs/dev
         run: terraform init
@@ -33,12 +38,11 @@ jobs:
         working-directory: ./envs/dev
         run: terraform fmt -check
 
-        # Plan (Dev) - detects breaking changes
       - name: Terraform Plan (Dev)
         working-directory: ./envs/dev
         run: terraform plan -out=tfplan
 
-      # Prod environment
+      # ─────────────── PROD ENVIRONMENT ───────────────
       - name: Terraform Init (Prod)
         working-directory: ./envs/prod
         run: terraform init
@@ -50,3 +54,7 @@ jobs:
       - name: Terraform Format Check (Prod)
         working-directory: ./envs/prod
         run: terraform fmt -check
+
+      - name: Terraform Plan (Prod)
+        working-directory: ./envs/prod
+        run: terraform plan -out=tfplan

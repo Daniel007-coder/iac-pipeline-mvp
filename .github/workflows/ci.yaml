@@ -1,3 +1,4 @@
+
 name: Terraform CI
 
 on:
@@ -19,14 +20,33 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      - name: Terraform Init
+      # Dev environment
+      - name: Terraform Init (Dev)
         working-directory: ./envs/dev
         run: terraform init
 
-      - name: Terraform Validate
+      - name: Terraform Validate (Dev)
         working-directory: ./envs/dev
         run: terraform validate
 
-      - name: Terraform Format Check
+      - name: Terraform Format Check (Dev)
         working-directory: ./envs/dev
+        run: terraform fmt -check
+
+        # Plan (Dev) - detects breaking changes
+      - name: Terraform Plan (Dev)
+        working-directory: ./envs/dev
+        run: terraform plan -out=tfplan
+
+      # Prod environment
+      - name: Terraform Init (Prod)
+        working-directory: ./envs/prod
+        run: terraform init
+
+      - name: Terraform Validate (Prod)
+        working-directory: ./envs/prod
+        run: terraform validate
+
+      - name: Terraform Format Check (Prod)
+        working-directory: ./envs/prod
         run: terraform fmt -check

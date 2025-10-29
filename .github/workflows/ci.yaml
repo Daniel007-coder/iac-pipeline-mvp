@@ -12,10 +12,8 @@ jobs:
 
     # 🧩 Mock AWS credentials so Terraform can run plan/validate in CI
     env:
-      AWS_ACCESS_KEY_ID: "fake"
-      AWS_SECRET_ACCESS_KEY: "fake"
-      AWS_DEFAULT_REGION: "us-east-1"
-
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

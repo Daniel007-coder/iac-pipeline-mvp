@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "example" {
-  bucket = "my-iac-pipeline-demo-bucket"
+  bucket = "var.bucket_name"
 
   tags = {
-    Name        = "DemoBucket"
+    Name        = var.name
     Environment = var.environment
-    Version     = "v1.0.0"
+    Version     = var.version
   }
 }
 

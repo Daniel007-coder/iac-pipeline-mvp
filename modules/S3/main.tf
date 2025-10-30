@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "example" {
   tags = {
     Name        = "DemoBucket"
     Environment = var.environment
+    Version     = "v1.0.0"
   }
 }
 
